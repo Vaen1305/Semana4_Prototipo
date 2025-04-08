@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -38,7 +38,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         lifeSlider.maxValue = player.MaxLife;
         lifeSlider.value = player.CurrentLife;
-        
+
+        // Suscribirse a los eventos del PlayerController
         PlayerController.OnLifeChanged += UpdateLifeUI;
         PlayerController.OnPointsChanged += UpdatePointsUI;
         PlayerController.OnPlayerDeath += HandleDefeat;
@@ -47,29 +48,32 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Cancelar la suscripción a los eventos para evitar referencias colgantes
         PlayerController.OnLifeChanged -= UpdateLifeUI;
         PlayerController.OnPointsChanged -= UpdatePointsUI;
         PlayerController.OnPlayerDeath -= HandleDefeat;
         PlayerController.OnPlayerWin -= HandleVictory;
     }
 
-    private void UpdateLifeUI(int newLife)
+    private void UpdateLifeUI(int nuevaVida)
     {
-        lifeSlider.value = newLife;
+        lifeSlider.value = nuevaVida;
     }
 
-    private void UpdatePointsUI(int newPoints)
+    private void UpdatePointsUI(int nuevosPuntos)
     {
-        pointsText.text = $"Puntos: {newPoints}";
+        pointsText.text = $"Puntos: {nuevosPuntos}";
     }
 
     private void HandleDefeat()
     {
+        // Cambio de escena ante derrota
         SceneManager.LoadScene("YouLoss");
     }
 
     private void HandleVictory()
     {
+        // Cambio de escena ante victoria
         SceneManager.LoadScene("YouWin");
     }
 

@@ -15,6 +15,9 @@ TagManager:
   - Cyan
   - Life
   - Point
+  - Victoria
+  - Moneda
+  - Corazon
   layers:
   - Default
   - TransparentFX
@@ -23,7 +26,7 @@ TagManager:
   - Water
   - UI
   - Suelo
-  - 
+  - Ground Layer
   - 
   - 
   - 

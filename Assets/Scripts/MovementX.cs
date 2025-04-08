@@ -11,7 +11,7 @@ public class MovementX : MonoBehaviour
 
     private void Awake()
     {
-        objectTransform = GetComponent<Transform>();
+        objectTransform = transform;
     }
 
     private void Update()
