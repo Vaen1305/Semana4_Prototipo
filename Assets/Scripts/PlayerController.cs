@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour
         CheckGround();
     }
 
-    #region Sistema de Movimiento
     public void OnMovement(InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -73,9 +72,7 @@ public class PlayerController : MonoBehaviour
             groundLayer
         );
     }
-    #endregion
 
-    #region Sistema de Color
     public void ChangeColor(Color newColor, int colorID)
     {
         spriteRenderer.color = newColor;
@@ -88,9 +85,7 @@ public class PlayerController : MonoBehaviour
     public void SetGreen() => ChangeColor(Color.green, 3);
     public void SetYellow() => ChangeColor(Color.yellow, 4);
     public void SetCyan() => ChangeColor(Color.cyan, 5);
-    #endregion
 
-    #region Sistema de Vida y Puntos
     public void TakeDamage(int damage)
     {
         currentLife = Mathf.Max(currentLife - damage, 0);
@@ -114,27 +109,64 @@ public class PlayerController : MonoBehaviour
         currentPoints += points;
         OnPointsChanged?.Invoke(currentPoints);
     }
-    #endregion
 
-    #region Colisiones
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Victoria"))
         {
             OnPlayerWin?.Invoke();
+            return;
         }
 
         if (collision.CompareTag("Moneda"))
         {
-            AddPoints(10);
+            AddPoints(10); 
             Destroy(collision.gameObject);
+            return;
         }
 
         if (collision.CompareTag("Corazon"))
         {
-            Heal(3); 
+            Heal(3);
             Destroy(collision.gameObject);
+            return;
+        }
+
+        if (collision.CompareTag("Red") || collision.CompareTag("Blue") || collision.CompareTag("Yellow"))
+        {
+            bool applyDamage = false;
+
+            if (collision.CompareTag("Red"))
+            {
+                if (spriteRenderer.color != Color.red)
+                {
+                    applyDamage = true;
+                }
+            }
+            else if (collision.CompareTag("Blue"))
+            {
+                if (spriteRenderer.color != Color.blue)
+                {
+                    applyDamage = true;
+                }
+            }
+            else if (collision.CompareTag("Yellow"))
+            {
+                if (spriteRenderer.color != Color.yellow)
+                {
+                    applyDamage = true;
+                }
+            }
+
+            if (applyDamage)
+            {
+                TakeDamage(1);
+            }
+            else
+            {
+                Debug.Log("Colisión segura: el color del jugador coincide con el muro.");
+            }
         }
     }
-    #endregion
+
 }
