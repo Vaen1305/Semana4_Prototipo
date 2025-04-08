@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
         lifeSlider.maxValue = player.MaxLife;
         lifeSlider.value = player.CurrentLife;
 
-        // Suscribirse a los eventos del PlayerController
         PlayerController.OnLifeChanged += UpdateLifeUI;
         PlayerController.OnPointsChanged += UpdatePointsUI;
         PlayerController.OnPlayerDeath += HandleDefeat;
@@ -48,7 +47,6 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Cancelar la suscripción a los eventos para evitar referencias colgantes
         PlayerController.OnLifeChanged -= UpdateLifeUI;
         PlayerController.OnPointsChanged -= UpdatePointsUI;
         PlayerController.OnPlayerDeath -= HandleDefeat;
@@ -67,13 +65,11 @@ public class GameManager : MonoBehaviour
 
     private void HandleDefeat()
     {
-        // Cambio de escena ante derrota
         SceneManager.LoadScene("YouLoss");
     }
 
     private void HandleVictory()
     {
-        // Cambio de escena ante victoria
         SceneManager.LoadScene("YouWin");
     }
 

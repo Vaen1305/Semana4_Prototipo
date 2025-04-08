@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 668606067}
   - component: {fileID: 668606066}
   - component: {fileID: 668606065}
+  - component: {fileID: 668606069}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -394,68 +395,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &702949382
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 702949385}
-  - component: {fileID: 702949384}
-  - component: {fileID: 702949383}
-  m_Layer: 0
-  m_Name: GameManagerController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &702949383
+--- !u!114 &668606069
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702949382}
+  m_GameObject: {fileID: 668606064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 651243d1bc3ba6b49affa813eaee17ea, type: 3}
+  m_Script: {fileID: 11500000, guid: a3b7a2f9dfd23a04783cac7ddff8ce6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 0}
---- !u!114 &702949384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702949382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf5685bbce7e1a458b782085309e509, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pausePanel: {fileID: 0}
-  lifeSlider: {fileID: 0}
-  pointsText: {fileID: 0}
-  player: {fileID: 0}
---- !u!4 &702949385
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 702949382}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &917315042
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,8 +490,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 702949384}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 668606069}
+        m_TargetAssemblyTypeName: ButtonController, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 5
         m_Arguments:
@@ -932,4 +883,3 @@ SceneRoots:
   - {fileID: 369473577}
   - {fileID: 668606068}
   - {fileID: 1490788875}
-  - {fileID: 702949385}
