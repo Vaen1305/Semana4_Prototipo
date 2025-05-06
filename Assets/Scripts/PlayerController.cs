@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private GameIntEvent lifeEvent;
     [SerializeField] private GameIntEvent pointsEvent;
+    [SerializeField] private GameEvent winEvent;
+    [SerializeField] private GameEvent lossEvent;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -90,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
         if (currentLife <= 0)
         {
-            //GameEvents.RaisePlayerLoss();
+            lossEvent?.Raise();
         }
     }
 
@@ -122,7 +124,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Victoria"))
         {
-            //GameEvents.RaisePlayerWin();
+            winEvent?.Raise();
             return;
         }
 

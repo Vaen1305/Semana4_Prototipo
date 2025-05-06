@@ -17,12 +17,16 @@ public class GameManager : MonoBehaviour
     public PlayerController player;
 
     [Header("Game Events")]
-    public GameIntEvent lifeEvent;    // Evento de vida
-    public GameIntEvent pointsEvent;  // Evento de puntos
+    public GameIntEvent lifeEvent;
+    public GameIntEvent pointsEvent;
+    public GameEvent winEvent;
+    public GameEvent lossEvent;
 
     [Header("Listeners")]
-    public GameIntEventListener lifeEventListener;  // Escucha el evento de vida
-    public GameIntEventListener pointsEventListener;  // Escucha el evento de puntos
+    public GameIntEventListener lifeEventListener;
+    public GameIntEventListener pointsEventListener;
+    public GameEventListener winEventListener;
+    public GameEventListener lossEventListener;
 
     private void Awake()
     {
@@ -47,31 +51,27 @@ public class GameManager : MonoBehaviour
             lifeSlider.value = player.CurrentLife;
         }
 
-        // Asignar el GameManager como el receptor de los eventos
         lifeEventListener.response.AddListener(UpdateLifeUI);
         pointsEventListener.response.AddListener(UpdatePointsUI);
 
-        GameEvents.OnPlayerLoss += HandleDefeat;
-        GameEvents.OnPlayerWin += HandleVictory;
+        winEventListener.response.AddListener(HandleVictory);
+        lossEventListener.response.AddListener(HandleDefeat);
     }
 
     private void OnDestroy()
     {
-        // Desasignar los eventos al destruir el GameManager
         lifeEventListener.response.RemoveListener(UpdateLifeUI);
         pointsEventListener.response.RemoveListener(UpdatePointsUI);
 
-        GameEvents.OnPlayerLoss -= HandleDefeat;
-        GameEvents.OnPlayerWin -= HandleVictory;
+        winEventListener.response.RemoveListener(HandleVictory);
+        lossEventListener.response.RemoveListener(HandleDefeat);
     }
 
-    // Método que se ejecuta cuando el evento de vida es disparado.
     public void UpdateLifeUI(int newLife)
     {
         lifeSlider.value = newLife;
     }
 
-    // Método que se ejecuta cuando el evento de puntos es disparado.
     public void UpdatePointsUI(int newPoints)
     {
         pointsText.text = $"Puntos: {newPoints}";
@@ -105,3 +105,4 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 }
+
