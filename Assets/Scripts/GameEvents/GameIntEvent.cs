@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Int Event", menuName = "Game Events/Int Event")]
 public class GameIntEvent : ScriptableObject
 {
-    private List<GameIntEventListener> listeners;
+    private List<GameIntEventListener> listeners = new List<GameIntEventListener>();
 
     private void OnEnable()
     {
@@ -25,9 +25,9 @@ public class GameIntEvent : ScriptableObject
 
     public void Raise(int value)
     {
-        foreach (GameIntEventListener sub in listeners)
+        for (int i = listeners.Count - 1; i >= 0; i--)
         {
-            sub.OnEventRaised(value);
+            listeners[i].OnEventRaised(value);
         }
     }
 

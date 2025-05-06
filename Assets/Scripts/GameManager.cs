@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using Assets.Scripts.GameEvents;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +15,14 @@ public class GameManager : MonoBehaviour
 
     [Header("Player Reference")]
     public PlayerController player;
+
+    [Header("Game Events")]
+    public GameIntEvent lifeEvent;    // Evento de vida
+    public GameIntEvent pointsEvent;  // Evento de puntos
+
+    [Header("Listeners")]
+    public GameIntEventListener lifeEventListener;  // Escucha el evento de vida
+    public GameIntEventListener pointsEventListener;  // Escucha el evento de puntos
 
     private void Awake()
     {
@@ -30,11 +39,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeGame();
-    }
-
-    private void InitializeGame()
-    {
         Time.timeScale = 1f;
 
         if (player != null)
@@ -43,28 +47,34 @@ public class GameManager : MonoBehaviour
             lifeSlider.value = player.CurrentLife;
         }
 
-        PlayerController.OnLifeChanged += UpdateLifeUI;
-        PointsSystem.OnPointsChanged += UpdatePointsUI;
+        // Asignar el GameManager como el receptor de los eventos
+        lifeEventListener.response.AddListener(UpdateLifeUI);
+        pointsEventListener.response.AddListener(UpdatePointsUI);
+
         GameEvents.OnPlayerLoss += HandleDefeat;
         GameEvents.OnPlayerWin += HandleVictory;
     }
 
     private void OnDestroy()
     {
-        PlayerController.OnLifeChanged -= UpdateLifeUI;
-        PointsSystem.OnPointsChanged -= UpdatePointsUI;
+        // Desasignar los eventos al destruir el GameManager
+        lifeEventListener.response.RemoveListener(UpdateLifeUI);
+        pointsEventListener.response.RemoveListener(UpdatePointsUI);
+
         GameEvents.OnPlayerLoss -= HandleDefeat;
         GameEvents.OnPlayerWin -= HandleVictory;
     }
 
-    private void UpdateLifeUI(int nuevaVida)
+    // Método que se ejecuta cuando el evento de vida es disparado.
+    public void UpdateLifeUI(int newLife)
     {
-        lifeSlider.value = nuevaVida;
+        lifeSlider.value = newLife;
     }
 
-    private void UpdatePointsUI(int nuevosPuntos)
+    // Método que se ejecuta cuando el evento de puntos es disparado.
+    public void UpdatePointsUI(int newPoints)
     {
-        pointsText.text = $"Puntos: {nuevosPuntos}";
+        pointsText.text = $"Puntos: {newPoints}";
     }
 
     private void HandleDefeat()
