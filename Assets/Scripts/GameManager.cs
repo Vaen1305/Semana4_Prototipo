@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
             lifeSlider.value = player.CurrentLife;
         }
 
-        PlayerController.OnLifeChanged += UpdateLifeUI;
+        PlayerController.OnLifeChanged += UpdateLifeUI;//aca
         PointsSystem.OnPointsChanged += UpdatePointsUI;
         GameEvents.OnPlayerLoss += HandleDefeat;
         GameEvents.OnPlayerWin += HandleVictory;

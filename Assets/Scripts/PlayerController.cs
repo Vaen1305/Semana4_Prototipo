@@ -1,4 +1,6 @@
+using Assets.Scripts.GameEvents;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -15,7 +17,8 @@ public class PlayerController : MonoBehaviour
     [Header("Referencias")]
     [SerializeField] private Transform groundCheckPoint;
     [SerializeField] private float groundCheckRadius = 0.2f;
-
+    [SerializeField] private GameEvent winEvent;
+    [SerializeField] private GameEvent lossEvent;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
 
@@ -87,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
         if (currentLife <= 0)
         {
-            GameEvents.TriggerLoss();
+            lossEvent?.Raise();
         }
     }
 
@@ -107,7 +110,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Victoria"))
         {
-            GameEvents.TriggerWin();
+            winEvent?.Raise();
             return;
         }
 
