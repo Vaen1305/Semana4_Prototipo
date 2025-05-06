@@ -6,13 +6,6 @@ public class PlayerController : MonoBehaviour
     public delegate void LifeUpdate(int nuevaVida);
     public static event LifeUpdate OnLifeChanged;
 
-    public delegate void PointsUpdate(int nuevosPuntos);
-    public static event PointsUpdate OnPointsChanged;
-
-    public delegate void PlayerAction();
-    public static event PlayerAction OnPlayerDeath;
-    public static event PlayerAction OnPlayerWin;
-
     [Header("Configuración Básica")]
     [SerializeField] private int maxLife = 10;
     [SerializeField] private float moveSpeed = 5f;
@@ -40,6 +33,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         currentLife = maxLife;
+        OnLifeChanged?.Invoke(currentLife);
     }
 
     private void Update()
@@ -89,12 +83,11 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentLife = Mathf.Max(currentLife - damage, 0);
-
         OnLifeChanged?.Invoke(currentLife);
 
         if (currentLife <= 0)
         {
-            OnPlayerDeath?.Invoke();
+            GameEvents.TriggerLoss();
         }
     }
 
@@ -107,20 +100,20 @@ public class PlayerController : MonoBehaviour
     public void AddPoints(int points)
     {
         currentPoints += points;
-        OnPointsChanged?.Invoke(currentPoints);
+        PointsSystem.UpdatePoints(currentPoints);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Victoria"))
         {
-            OnPlayerWin?.Invoke();
+            GameEvents.TriggerWin();
             return;
         }
 
         if (collision.CompareTag("Moneda"))
         {
-            AddPoints(10); 
+            AddPoints(10);
             Destroy(collision.gameObject);
             return;
         }
@@ -136,27 +129,12 @@ public class PlayerController : MonoBehaviour
         {
             bool applyDamage = false;
 
-            if (collision.CompareTag("Red"))
-            {
-                if (spriteRenderer.color != Color.red)
-                {
-                    applyDamage = true;
-                }
-            }
-            else if (collision.CompareTag("Blue"))
-            {
-                if (spriteRenderer.color != Color.blue)
-                {
-                    applyDamage = true;
-                }
-            }
-            else if (collision.CompareTag("Yellow"))
-            {
-                if (spriteRenderer.color != Color.yellow)
-                {
-                    applyDamage = true;
-                }
-            }
+            if (collision.CompareTag("Red") && spriteRenderer.color != Color.red)
+                applyDamage = true;
+            else if (collision.CompareTag("Blue") && spriteRenderer.color != Color.blue)
+                applyDamage = true;
+            else if (collision.CompareTag("Yellow") && spriteRenderer.color != Color.yellow)
+                applyDamage = true;
 
             if (applyDamage)
             {
@@ -168,5 +146,4 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
 }

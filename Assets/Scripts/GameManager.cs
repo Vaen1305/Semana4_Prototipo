@@ -36,21 +36,25 @@ public class GameManager : MonoBehaviour
     private void InitializeGame()
     {
         Time.timeScale = 1f;
-        lifeSlider.maxValue = player.MaxLife;
-        lifeSlider.value = player.CurrentLife;
+
+        if (player != null)
+        {
+            lifeSlider.maxValue = player.MaxLife;
+            lifeSlider.value = player.CurrentLife;
+        }
 
         PlayerController.OnLifeChanged += UpdateLifeUI;
-        PlayerController.OnPointsChanged += UpdatePointsUI;
-        PlayerController.OnPlayerDeath += HandleDefeat;
-        PlayerController.OnPlayerWin += HandleVictory;
+        PointsSystem.OnPointsChanged += UpdatePointsUI;
+        GameEvents.OnPlayerLoss += HandleDefeat;
+        GameEvents.OnPlayerWin += HandleVictory;
     }
 
     private void OnDestroy()
     {
         PlayerController.OnLifeChanged -= UpdateLifeUI;
-        PlayerController.OnPointsChanged -= UpdatePointsUI;
-        PlayerController.OnPlayerDeath -= HandleDefeat;
-        PlayerController.OnPlayerWin -= HandleVictory;
+        PointsSystem.OnPointsChanged -= UpdatePointsUI;
+        GameEvents.OnPlayerLoss -= HandleDefeat;
+        GameEvents.OnPlayerWin -= HandleVictory;
     }
 
     private void UpdateLifeUI(int nuevaVida)
